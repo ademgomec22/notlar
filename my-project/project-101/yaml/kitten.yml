@@ -1,0 +1,25 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: MykittenApacheServer
+
+Resources: 
+  myEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      KeyName: firstkey
+      ImageId: ami-05fa00d4c63e32376
+      InstanceType: t2.micro
+      SecurityGroupIds: 
+        - http-ssh-sec-grp
+      UserData: !Base64 |
+        #!/bin/bash 
+        yum update -y 
+        yum install httpd -y 
+        systemctl start httpd
+        systemctl enable httpd 
+        chmod -R 777 /var/www/html
+        cd /var/www/html
+        wget https://raw.githubusercontent.com/ademgomec22/notlar/main/my-project/project-101/static-web/index.html
+        wget https://raw.githubusercontent.com/ademgomec22/notlar/main/my-project/project-101/static-web/cat0.jpg
+        wget https://raw.githubusercontent.com/ademgomec22/notlar/main/my-project/project-101/static-web/cat1.jpg
+        wget https://raw.githubusercontent.com/ademgomec22/notlar/main/my-project/project-101/static-web/cat2.jpg
+        wget https://raw.githubusercontent.com/ademgomec22/notlar/main/my-project/project-101/static-web/cat3.png
