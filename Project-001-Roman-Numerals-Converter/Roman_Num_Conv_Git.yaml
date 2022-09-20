@@ -25,7 +25,7 @@ Resources:  # http ve ssh bağlantısı için security grup oluşturuyoruz
   WebServerHost:  # ağa bağlanacak ec2 oluşturuyoruz
     Type: AWS::EC2::Instance
     Properties:
-      ImageId: ami-05fa00d4c63e32376  # N.Virginia ami id giriyoruz
+      ImageId: ami-05fa00d4c63e32376  # N.Virginia image id si
       InstanceType: t2.micro
       KeyName: !Ref KeyName 
       SecurityGroupIds:
@@ -34,18 +34,16 @@ Resources:  # http ve ssh bağlantısı için security grup oluşturuyoruz
         - Key: Name
           Value: !Sub WebServer of ${AWS::StackName} Stack  # İnstance isminin orada gözükecek StackName
       UserData: !Base64 |
-        #!/bin/bash 
+        #!/bin/bash
         yum update -y
-        yum install python3 -y
-        pip3 install flask
+        yum install git -y
+        sudo pip3 install flask 
+        git clone https://github.com/ademgomec22/notlar/tree/main/Project-001-Roman-Numerals-Converter
         cd /home/ec2-user
-        wget https://raw.githubusercontent.com/ademgomec22/notlar/main/Project-001-Roman-Numerals-Converter/app.py
-        mkdir templates
-        cd templates
-        wget https://raw.githubusercontent.com/ademgomec22/notlar/main/Project-001-Roman-Numerals-Converter/templates/index.html
-        wget https://raw.githubusercontent.com/ademgomec22/notlar/main/Project-001-Roman-Numerals-Converter/templates/result.html
-        cd ..
-        python3 app.py      
+        mkdir proje
+        cd proje
+        sudo cp -r /my-projects/aws/projects/Project-001-Roman-Numerals-Converter/* /home/ec2-user/proje
+        sudo python3 app.py      
 
 Outputs:
   WebsiteURL:
